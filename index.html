@@ -1,401 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Francisco Antonio — AI Architect & Researcher</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0a0a0a;
-      --text:#E0E0E0;
-      --muted:#bdbdbd;
-      --accent:#FF8C00;        /* vibrant orange */
-      --accent-2:#9370DB;      /* medium purple */
-      --card:#111113;
-      --ring:rgba(147,112,219,0.35);
-      --maxw:800px;
-      --radius:14px;
-      --shadow:0 10px 30px rgba(0,0,0,0.45);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Francisco Antonio — AI Architect & Researcher</title>
+    <meta name="description" content="AI Architect & Researcher focused on next-gen language model architectures.">
+    
+    <!-- Fonts: Inter for UI, JetBrains Mono for Code/Tech -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for instant usage without build steps) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-      background: radial-gradient(1200px 1200px at 10% -20%, rgba(147,112,219,0.08), transparent 60%),
-                  radial-gradient(900px 900px at 110% 10%, rgba(255,140,0,0.07), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      letter-spacing:0.1px;
-    }
-
-    a{
-      color:var(--accent);
-      text-decoration:none;
-      transition:color .2s ease,opacity .2s ease, transform .2s ease;
-    }
-    a:hover{color:#ffa43a}
-
-    .container{
-      width:100%;
-      max-width:var(--maxw);
-      margin:0 auto;
-      padding:48px 20px 80px;
-    }
-
-    header.hero{
-      display:flex;
-      align-items:center;
-      gap:24px;
-      padding:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      isolation:isolate;
-    }
-    header.hero::after{
-      content:"";
-      position:absolute;
-      inset:0 -40% -60% -40%;
-      background: radial-gradient(400px 200px at 20% -20%, rgba(147,112,219,0.15), transparent 60%),
-                  radial-gradient(350px 200px at 120% 0%, rgba(255,140,0,0.12), transparent 60%);
-      z-index:-1;
-      pointer-events:none;
-    }
-    .avatar{
-      width:150px;height:150px;flex:0 0 auto;
-      border-radius:50%;
-      background:linear-gradient(135deg, rgba(255,140,0,0.25), rgba(147,112,219,0.25));
-      padding:3px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.5), 0 0 0 6px rgba(147,112,219,0.08);
-    }
-    .avatar img{
-      display:block;
-      width:100%;height:100%;
-      border-radius:50%;
-      object-fit:cover;
-      background:#0e0e10;
-    }
-    .title-wrap{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .name{
-      font-size:clamp(24px, 4.5vw, 36px);
-      font-weight:700;
-      line-height:1.15;
-      letter-spacing:0.2px;
-    }
-    .role{
-      font-size:clamp(14px, 2.2vw, 16px);
-      color:var(--muted);
-      font-weight:500;
-    }
-
-    .social{
-      display:flex;align-items:center;gap:12px;margin-top:8px;
-    }
-    .icon-btn{
-      width:36px;height:36px;
-      display:grid;place-items:center;
-      border-radius:10px;
-      background:#121214;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--text);
-      transition:transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
-    }
-    .icon-btn:hover{
-      transform:translateY(-1px);
-      border-color:var(--accent-2);
-      color:var(--accent);
-      box-shadow:0 0 0 6px var(--ring);
-    }
-    .icon{
-      width:18px;height:18px;display:block;
-      fill:currentColor
-    }
-
-    section{
-      margin-top:36px;
-      padding:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-    }
-
-    h2.section-title{
-      margin:0 0 12px 0;
-      font-size:clamp(18px, 2.6vw, 22px);
-      font-weight:700;
-      color:var(--accent);
-      letter-spacing:0.2px;
-    }
-    p{
-      margin:0;
-      color:var(--text);
-      line-height:1.75;
-      font-size:16px;
-    }
-    .muted{
-      color:var(--muted);
-    }
-
-    /* Project cards */
-    .projects{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:18px;
-      margin-top:12px;
-    }
-    @media(min-width:760px){
-      .projects{grid-template-columns:1fr 1fr}
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:12px;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(147,112,219,0.5);
-      box-shadow:0 10px 30px rgba(0,0,0,0.5), 0 0 0 6px var(--ring);
-    }
-    .card h3{
-      margin:0;
-      font-size:18px;
-      line-height:1.35;
-      color:#fff;
-    }
-    .card p{
-      color:var(--muted);
-      line-height:1.65;
-      font-size:15px;
-    }
-    .tags{
-      display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;
-    }
-    .tag{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.1);
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      color:#ddd;
-      font-size:12px;
-      letter-spacing:0.2px;
-    }
-    .btn{
-      margin-top:auto;
-      align-self:flex-start;
-      padding:10px 14px;
-      border-radius:10px;
-      background:linear-gradient(180deg, rgba(255,140,0,0.12), rgba(255,140,0,0.06));
-      color:#fff;
-      font-weight:600;
-      border:1px solid rgba(255,140,0,0.45);
-      transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
-    }
-    .btn:hover{
-      transform:translateY(-1px);
-      background:linear-gradient(180deg, rgba(255,140,0,0.18), rgba(255,140,0,0.08));
-      border-color:#FF8C00;
-      box-shadow:0 0 0 6px rgba(255,140,0,0.15);
-    }
-
-    footer{
-      margin-top:36px;
-      text-align:center;
-      color:var(--muted);
-    }
-    .footer-cta{
-      margin-bottom:10px;
-      font-size:15px;
-      color:#ddd;
-    }
-    .footer-social{
-      display:flex;justify-content:center;gap:12px;margin-top:10px;
-    }
-
-    /* Focus styles */
-    :focus-visible{
-      outline:2px solid var(--accent-2);
-      outline-offset:2px;
-      border-radius:10px;
-    }
-
-    /* Small refinements on mobile */
-    @media(max-width:540px){
-      header.hero{
-        padding:22px;
-        gap:18px;
-      }
-      .avatar{width:120px;height:120px}
-      .btn{width:100%;text-align:center}
-    }
-  </style>
-</head>
-<body>
-  <main class="container" aria-label="Main content">
-
-    <!-- Header / Hero Section -->
-    <header class="hero">
-      <div class="avatar" aria-hidden="true">
-        <img src="profile.png" alt="Profile photo of Francisco Antonio" width="150" height="150" />
-      </div>
-      <div class="title-wrap">
-        <div class="name">Francisco Antonio</div>
-        <div class="role">AI Architect & Researcher</div>
-        <div class="social" aria-label="Social links">
-          <a class="icon-btn" href="https://github.com/MeryylleA" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.12-1.52-1.12-1.52-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.58 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.43.2 2.49.1 2.75.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.31.67.91.67 1.83 0 1.32-.01 2.38-.01 2.7 0 .26.18.59.69.49A10.05 10.05 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
-            </svg>
-          </a>
-          <a class="icon-btn" href="https://www.linkedin.com/in/francisco-antonio-0434aa284/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M19 3A2.94 2.94 0 0 1 22 6v12a2.94 2.94 0 0 1-3 3H5a2.94 2.94 0 0 1-3-3V6a2.94 2.94 0 0 1 3-3h14m-9.5 6H7v10h2.5V9m-.1-3A1.4 1.4 0 0 0 10 4.5 1.4 1.4 0 0 0 8.4 3a1.4 1.4 0 0 0-1.5 1.5A1.4 1.4 0 0 0 8.4 6m11.1 7.5c0-3.2-1.7-4.7-4-4.7a3.5 3.5 0 0 0-3.2 1.8h-.1V9H9.7v10h2.5v-5.5c0-1.5.3-2.9 2.1-2.9s1.9 1.8 1.9 3V19H19z"/>
-            </svg>
-          </a>
-          <a class="icon-btn" href="https://x.com/a93918" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-            <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M18.244 2H21l-6.5 7.43L22 22h-6.828l-5.34-7.095L3.6 22H1l7.063-8.08L2 2h6.914l4.83 6.51L18.244 2zm-2.392 18h2.122L8.24 4H6.006l9.846 16z"/>
-            </svg>
-          </a>
-          <a class="icon-btn" href="mailto:meryyllebr@gmail.com" aria-label="Email">
-            <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-              <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <!-- About Me Section -->
-    <section id="about">
-      <h2 class="section-title">About Me</h2>
-      <p>
-        I am a 17-year-old self-taught researcher passionate about building the next generation of language model architectures from the ground up. I see a Transformer architecture as a canvas—a space to explore new pathways to intelligence, from the computational efficiency of industrial-grade Mixture-of-Experts to the emergent complexity of collaborative reasoning systems. My work focuses on designing, implementing, and training high-performance AI systems in PyTorch that don't just work, but also teach us something new about learning itself.
-      </p>
-    </section>
-
-    <!-- Featured Projects Section -->
-    <section id="projects">
-      <h2 class="section-title">Featured Research & Projects</h2>
-
-      <div class="projects">
-        <!-- Project Card 1 -->
-        <article class="card">
-          <h3>Lunaris Codex - Dense Foundation Model</h3>
-          <p>"A modern, Llama-style Transformer architecture built from scratch, incorporating SOTA features like QK-Norm, Grouped-Query Attention (GQA), and NTK-aware RoPE for enhanced stability and performance."</p>
-          <div class="tags" aria-label="Key Concepts">
-            <span class="tag">Transformer Architecture</span>
-            <span class="tag">PyTorch</span>
-            <span class="tag">GQA</span>
-            <span class="tag">QK-Norm</span>
-            <span class="tag">Large-Scale Training</span>
-          </div>
-          <a class="btn" href="https://github.com/MeryylleA/lunariscodex" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        </article>
-
-        <!-- Project Card 2 -->
-        <article class="card">
-          <h3>Lunaris Codex - MoE</h3>
-          <p>"An industrial-grade Mixture-of-Experts (MoE) implementation based on the Switch Transformer. Features capacity-aware routing, router z-loss for stability, and a high-performance contiguous dispatch mechanism."</p>
-          <div class="tags" aria-label="Key Concepts">
-            <span class="tag">Mixture-of-Experts (MoE)</span>
-            <span class="tag">Performance Optimization</span>
-            <span class="tag">Distributed Training (FSDP)</span>
-            <span class="tag">PyTorch</span>
-          </div>
-          <a class="btn" href="https://github.com/MeryylleA/lunariscodex/tree/moe-experiment" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        </article>
-
-        <!-- Project Card 3 -->
-        <article class="card">
-          <h3>Lunaris Codex - MoC (Mixture-of-Collaborative-Experts)</h3>
-          <p>"My primary research into a novel architecture where selected experts collaborate via a '2-Pass' communication mechanism before fusion. This aims to enable emergent reasoning and self-correction capabilities beyond standard MoEs."</p>
-          <div class="tags" aria-label="Key Concepts">
-            <span class="tag">Novel Architecture</span>
-            <span class="tag">AI Research</span>
-            <span class="tag">Collaborative AI</span>
-            <span class="tag">Emergent Behavior</span>
-          </div>
-          <a class="btn" href="https://github.com/MeryylleA/lunariscodex-MoC" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        </article>
-
-        <!-- Project Card 4 -->
-        <article class="card">
-          <h3>Lunaris Codex - NSA-MoE Hybrid</h3>
-          <p>"An experimental fusion of Native Sparse Attention (NSA) and Mixture-of-Experts (MoE) to simultaneously address the O(n²) attention complexity and the dense parameter growth of LLMs, enabling long-context sparse models."</p>
-          <div class="tags" aria-label="Key Concepts">
-            <span class="tag">Sparse Attention</span>
-            <span class="tag">Long-Context Models</span>
-            <span class="tag">Systems Integration</span>
-          </div>
-          <a class="btn" href="https://github.com/MeryylleA/lunariscodex/tree/nsa-experiment" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- Contact / Footer Section -->
-    <footer id="contact">
-      <p class="footer-cta">I'm always open to discussing new ideas and opportunities. Feel free to reach out.</p>
-      <div class="footer-social" aria-label="Social links">
-        <a class="icon-btn" href="https://github.com/MeryylleA" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.12-1.52-1.12-1.52-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.58 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.43.2 2.49.1 2.75.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.31.67.91.67 1.83 0 1.32-.01 2.38-.01 2.7 0 .26.18.59.69.49A10.05 10.05 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
-          </svg>
-        </a>
-        <a class="icon-btn" href="https://www.linkedin.com/in/francisco-antonio-0434aa284/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path d="M19 3A2.94 2.94 0 0 1 22 6v12a2.94 2.94 0 0 1-3 3H5a2.94 2.94 0 0 1-3-3V6a2.94 2.94 0 0 1 3-3h14m-9.5 6H7v10h2.5V9m-.1-3A1.4 1.4 0 0 0 10 4.5 1.4 1.4 0 0 0 8.4 3a1.4 1.4 0 0 0-1.5 1.5A1.4 1.4 0 0 0 8.4 6m11.1 7.5c0-3.2-1.7-4.7-4-4.7a3.5 3.5 0 0 0-3.2 1.8h-.1V9H9.7v10h2.5v-5.5c0-1.5.3-2.9 2.1-2.9s1.9 1.8 1.9 3V19H19z"/>
-          </svg>
-        </a>
-        <a class="icon-btn" href="https://x.com/a93918" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path d="M18.244 2H21l-6.5 7.43L22 22h-6.828l-5.34-7.095L3.6 22H1l7.063-8.08L2 2h6.914l4.83 6.51L18.244 2zm-2.392 18h2.122L8.24 4H6.006l9.846 16z"/>
-          </svg>
-        </a>
-        <a class="icon-btn" href="mailto:meryyllebr@gmail.com" aria-label="Email">
-          <svg class="icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
-          </svg>
-        </a>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    // Small enhancement: reduce motion for users preferring reduced motion
-    (function(){
-      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const root = document.documentElement;
-      function apply(){
-        if(mq.matches){
-          root.style.setProperty('scroll-behavior','auto');
-        }else{
-          root.style.setProperty('scroll-behavior','smooth');
+    <!-- Custom Config for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        background: '#050505',
+                        surface: '#0A0A0A',
+                        surfaceHighlight: '#121212',
+                        border: '#222222',
+                        primary: '#E0E0E0',
+                        secondary: '#A0A0A0',
+                        accent: '#FF8C00', // Preserved your orange
+                        accentPurple: '#9370DB', // Preserved your purple
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
         }
-      }
-      apply();
-      mq.addEventListener?.('change', apply);
-    })();
-  </script>
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #030303;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(147, 112, 219, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(255, 140, 0, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Noise Texture Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Glass Card Styles */
+        .bento-card {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .bento-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333; 
+        }
+
+        .tech-pill {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+        .tech-pill:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="text-primary antialiased selection:bg-accent selection:text-white pb-20">
+
+    <!-- Noise Texture -->
+    <div class="noise-overlay"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        
+        <!-- Header / Nav -->
+        <header class="flex justify-between items-center mb-16 animate-fade-in">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="font-mono text-sm text-secondary tracking-tight">AVAILABLE FOR RESEARCH</span>
+            </div>
+            
+            <nav class="flex gap-6">
+                <a href="mailto:meryyllebr@gmail.com" class="text-secondary hover:text-white transition-colors text-sm font-medium">Contact</a>
+                <a href="https://github.com/MeryylleA" target="_blank" class="text-secondary hover:text-white transition-colors text-sm font-medium">GitHub</a>
+            </nav>
+        </header>
+
+        <!-- Main Layout: Bento Grid -->
+        <main class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-min">
+
+            <!-- 1. Hero / Profile (Spans 8 columns on desktop) -->
+            <div class="col-span-1 md:col-span-8 bento-card rounded-3xl p-8 md:p-12 relative overflow-hidden group animate-slide-up" style="animation-delay: 0.1s;">
+                <!-- Subtle Gradient Background Effect -->
+                <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-accentPurple/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-accentPurple/20 transition-all duration-700"></div>
+
+                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full">
+                    <div class="relative">
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl">
+                            <!-- Placeholder for profile image, add your src back if you have it hosted -->
+                            <img src="https://github.com/MeryylleA.png" onerror="this.src='https://ui-avatars.com/api/?name=Francisco+Antonio&background=111&color=fff'" alt="Francisco Antonio" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 bg-surfaceHighlight border border-border p-2 rounded-full">
+                            <i data-lucide="brain-circuit" class="w-5 h-5 text-accent"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+                            Francisco Antonio
+                        </h1>
+                        <p class="text-xl md:text-2xl text-secondary font-light">
+                            AI Architect & <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accentPurple">Researcher</span>
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <a href="https://github.com/MeryylleA" class="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-gray-200 transition-colors">
+                                <i data-lucide="github" class="w-4 h-4"></i> GitHub
+                            </a>
+                            <a href="https://x.com/a93918" class="flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-white/20 transition-colors backdrop-blur-sm">
+                                <i data-lucide="twitter" class="w-4 h-4"></i> Twitter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Stats / Quick Info (Spans 4 columns) -->
+            <div class="col-span-1 md:col-span-4 grid grid-rows-2 gap-6">
+                <!-- Location/Age -->
+                <div class="bento-card rounded-3xl p-6 flex flex-col justify-center animate-slide-up" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-secondary font-mono text-xs uppercase">Age</span>
+                        <i data-lucide="user" class="w-4 h-4 text-accent"></i>
+                    </div>
+                    <div class="text-3xl font-bold">17 <span class="text-sm font-normal text-secondary ml-1">y/o</span></div>
+                    <div class="text-sm text-secondary mt-1">Self-taught Researcher</div>
+                </div>
+
+                <!-- Focus Area -->
+                <div class="bento-card rounded-3xl p-6 flex flex-col justify-center animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-secondary font-mono text-xs uppercase">Focus</span>
+                        <i data-lucide="layers" class="w-4 h-4 text-accentPurple"></i>
+                    </div>
+                    <div class="text-lg font-medium leading-tight">LLM Architectures &<br>Emergent Intelligence</div>
+                </div>
+            </div>
+
+            <!-- 3. About Section (Spans 12 columns - Full Width) -->
+            <div class="col-span-1 md:col-span-12 bento-card rounded-3xl p-8 md:p-10 animate-slide-up" style="animation-delay: 0.4s;">
+                <div class="flex flex-col md:flex-row gap-10">
+                    <div class="md:w-1/3">
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="terminal" class="w-5 h-5 text-accent"></i>
+                            Mission Protocol
+                        </h2>
+                        <div class="h-1 w-20 bg-gradient-to-r from-accent to-transparent rounded-full"></div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p class="text-secondary text-lg leading-relaxed">
+                            Passionate about building the next generation of language model architectures from the ground up. I see a Transformer architecture as a canvas—a space to explore new pathways to intelligence, from the computational efficiency of industrial-grade <span class="text-white font-medium">Mixture-of-Experts</span> to the emergent complexity of collaborative reasoning systems.
+                        </p>
+                        <p class="text-secondary text-lg leading-relaxed mt-4">
+                            My work focuses on designing, implementing, and training high-performance AI systems in <span class="font-mono text-accent">PyTorch</span> that don't just work, but also teach us something new about learning itself.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Projects Header -->
+            <div class="col-span-1 md:col-span-12 mt-8 mb-4 flex items-center justify-between animate-slide-up" style="animation-delay: 0.5s;">
+                <h3 class="text-xl font-mono text-white">SELECTED_WORKS</h3>
+                <div class="h-[1px] flex-1 bg-border ml-6"></div>
+            </div>
+
+            <!-- Project 1: Lunaris Dense -->
+            <a href="https://github.com/MeryylleA/lunariscodex" target="_blank" class="col-span-1 md:col-span-6 bento-card rounded-3xl p-8 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.6s;">
+                <div class="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i data-lucide="arrow-up-right" class="text-white w-6 h-6"></i>
+                </div>
+                
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                            <i data-lucide="box" class="w-4 h-4"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">Lunaris Codex - Dense</h4>
+                    </div>
+                    <p class="text-secondary mb-6 line-clamp-3">
+                        A modern, Llama-style Transformer architecture built from scratch. Incorporates SOTA features like QK-Norm, Grouped-Query Attention (GQA), and NTK-aware RoPE for enhanced stability and performance.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">PyTorch</span>
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">GQA</span>
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">QK-Norm</span>
+                </div>
+            </a>
+
+            <!-- Project 2: Lunaris MoE -->
+            <a href="https://github.com/MeryylleA/lunariscodex/tree/moe-experiment" target="_blank" class="col-span-1 md:col-span-6 bento-card rounded-3xl p-8 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.7s;">
+                <div class="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i data-lucide="arrow-up-right" class="text-white w-6 h-6"></i>
+                </div>
+                
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white group-hover:text-accent transition-colors">Lunaris Codex - MoE</h4>
+                    </div>
+                    <p class="text-secondary mb-6 line-clamp-3">
+                        Industrial-grade Mixture-of-Experts based on Switch Transformer. Features capacity-aware routing, router z-loss for stability, and high-performance contiguous dispatch.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">MoE</span>
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">FSDP</span>
+                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">Distributed</span>
+                </div>
+            </a>
+
+            <!-- Project 3: MoC (Collaborative) -->
+            <a href="https://github.com/MeryylleA/lunariscodex-MoC" target="_blank" class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.8s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-accentPurple/10 flex items-center justify-center text-accentPurple">
+                        <i data-lucide="network" class="w-4 h-4"></i>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">MoC (Mixture-of-Collaborative-Experts)</h4>
+                <p class="text-secondary text-sm mb-4">
+                    Novel architecture where experts collaborate via a '2-Pass' communication mechanism before fusion, enabling emergent reasoning.
+                </p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Research</span>
+                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Novel</span>
+                </div>
+            </a>
+
+            <!-- Project 4: NSA Hybrid -->
+            <a href="https://github.com/MeryylleA/lunariscodex/tree/nsa-experiment" target="_blank" class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.9s;">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">
+                        <i data-lucide="zap" class="w-4 h-4"></i>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">NSA-MoE Hybrid</h4>
+                <p class="text-secondary text-sm mb-4">
+                    Fusion of Native Sparse Attention (NSA) and MoE to simultaneously address O(n²) complexity and parameter growth.
+                </p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Sparse Attn</span>
+                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Long Context</span>
+                </div>
+            </a>
+
+            <!-- Connect Block -->
+            <div class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 flex flex-col justify-between group animate-slide-up" style="animation-delay: 1.0s;">
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-2">Let's Connect</h4>
+                    <p class="text-secondary text-sm">
+                        Always open to discussing new architectures and opportunities.
+                    </p>
+                </div>
+                <div class="flex gap-4 mt-6">
+                    <a href="https://www.linkedin.com/in/francisco-antonio-0434aa284/" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#0077b5] hover:text-white transition-all">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="mailto:meryyllebr@gmail.com" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://x.com/a93918" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+        
+        <footer class="mt-24 text-center text-secondary text-sm font-mono opacity-50">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Francisco Antonio. Built with logic.</p>
+        </footer>
+
+    </div>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
