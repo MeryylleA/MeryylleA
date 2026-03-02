@@ -8,449 +8,821 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #f8f7f4;
+            --fg: #111;
+            --muted: #888;
+            --faint: #ccc;
+            --border: #e0ddd8;
+            --surface: #fff;
+            --green: #1a9e4a;
+            --green-bg: #f0faf4;
+            --accent: #111;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'JetBrains Mono', monospace;
-            background: #fafafa;
-            color: #111;
+            background: var(--bg);
+            color: var(--fg);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        ::selection {
-            background: #111;
-            color: #fafafa;
+        /* Grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.4;
         }
+
+        ::selection { background: #111; color: #f8f7f4; }
 
         a {
-            color: #111;
+            color: var(--fg);
             text-decoration: none;
-            border-bottom: 1px solid #ccc;
-            transition: border-color 0.2s;
+            border-bottom: 1px solid var(--faint);
+            transition: border-color 0.2s, color 0.2s;
         }
+        a:hover { border-color: var(--fg); }
 
-        a:hover {
-            border-color: #111;
-        }
-
-        .container {
-            max-width: 720px;
+        /* ─── Layout ─── */
+        .page {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 100vh;
+            max-width: 960px;
             margin: 0 auto;
-            padding: 80px 24px;
         }
 
-        /* ASCII Header */
-        .ascii-header {
-            font-size: 11px;
-            line-height: 1.3;
-            color: #999;
-            margin-bottom: 64px;
-            white-space: pre;
-            overflow-x: auto;
-        }
-
-        /* Status Bar */
-        .status {
+        /* ─── Sidebar ─── */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 48px 0 48px 24px;
             display: flex;
-            align-items: center;
-            gap: 8px;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--fg);
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease 0.1s forwards;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .nav-item {
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #888;
-            margin-bottom: 48px;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            border-bottom: none;
+            padding: 6px 0;
+            transition: color 0.2s;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards;
+        }
+        .nav-item:nth-child(1) { animation-delay: 0.2s; }
+        .nav-item:nth-child(2) { animation-delay: 0.25s; }
+        .nav-item:nth-child(3) { animation-delay: 0.3s; }
+        .nav-item:nth-child(4) { animation-delay: 0.35s; }
+        .nav-item:nth-child(5) { animation-delay: 0.4s; }
+        .nav-item:nth-child(6) { animation-delay: 0.45s; }
+
+        .nav-item:hover, .nav-item.active { color: var(--fg); }
+        .nav-item.active::before {
+            content: '→ ';
         }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            animation: pulse 2s infinite;
+        .sidebar-footer {
+            font-size: 10px;
+            color: var(--faint);
+            line-height: 1.6;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+        /* ─── Main ─── */
+        main {
+            padding: 48px 48px 80px;
         }
 
-        /* Sections */
-        .section {
-            margin-bottom: 64px;
+        /* ─── Section ─── */
+        section {
+            padding: 64px 0;
+            border-bottom: 1px solid var(--border);
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        section:last-child { border-bottom: none; }
 
-        .section-label {
+        .section-tag {
             font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #aaa;
-            margin-bottom: 16px;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-tag::after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 40px;
+            background: var(--border);
+        }
+
+        /* ─── Hero ─── */
+        #hero { padding-top: 32px; }
+
+        .status-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--green);
+            background: var(--green-bg);
+            padding: 6px 12px;
+            border-radius: 2px;
+            margin-bottom: 28px;
+            border: 1px solid #b7e8ca;
+        }
+        .status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 6px;
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 32px;
+        .hero-meta {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
         }
+        .hero-meta span { color: var(--fg); }
 
-        p {
+        .hero-body {
             font-size: 13px;
             color: #444;
-            margin-bottom: 16px;
+            max-width: 520px;
+            line-height: 1.9;
         }
 
-        /* Results Table */
+        /* ─── Research ─── */
+        .research-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .research-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--fg);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.35s ease;
+        }
+        .research-card:hover::before { transform: scaleY(1); }
+        .research-card:hover { border-color: #ccc; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .badge {
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            background: var(--fg);
+            color: var(--bg);
+            border-radius: 2px;
+        }
+        .badge.wip { background: #f59e0b; color: #fff; }
+
+        .card-body {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.85;
+        }
+
+        /* ─── Diagram ─── */
+        .ascii-diagram {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 28px 24px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #666;
+            white-space: pre;
+            overflow-x: auto;
+            margin-top: 8px;
+            position: relative;
+        }
+        .diagram-label {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        /* ─── Results ─── */
         .results-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
-            margin: 24px 0;
+            margin-top: 8px;
         }
-
+        .results-table thead tr {
+            border-bottom: 2px solid var(--border);
+        }
         .results-table th {
             text-align: left;
             font-weight: 500;
-            color: #888;
-            padding: 8px 12px;
-            border-bottom: 2px solid #e5e5e5;
+            color: var(--muted);
+            padding: 10px 14px;
             font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
         }
-
+        .results-table tbody tr {
+            border-bottom: 1px solid #f0ece6;
+            transition: background 0.2s;
+        }
+        .results-table tbody tr:last-child { border-bottom: none; }
+        .results-table tbody tr:hover { background: var(--surface); }
         .results-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #333;
+            padding: 12px 14px;
+            color: #444;
         }
-
-        .results-table tr:last-child td {
-            border-bottom: none;
+        .results-table .highlight td { font-weight: 700; color: var(--fg); background: #f9f8f5; }
+        .results-table .highlight td:first-child {
+            border-left: 3px solid var(--fg);
         }
+        .delta { color: var(--green); font-size: 11px; }
 
-        .results-table .highlight {
-            font-weight: 700;
-            color: #111;
+        /* Bar chart visualization */
+        .bar-chart {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-
-        .results-table .delta {
-            color: #22c55e;
-            font-size: 11px;
-        }
-
-        /* Divider */
-        .divider {
-            border: none;
-            border-top: 1px solid #e5e5e5;
-            margin: 48px 0;
-        }
-
-        /* Architecture Diagram (ASCII) */
-        .ascii-diagram {
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            padding: 24px;
-            font-size: 11px;
-            line-height: 1.4;
-            color: #555;
-            white-space: pre;
-            overflow-x: auto;
-            margin: 24px 0;
-        }
-
-        /* Tech List */
-        .tech-grid {
+        .bar-row {
             display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 8px 24px;
-            font-size: 12px;
-            margin: 16px 0;
-        }
-
-        .tech-label {
-            color: #aaa;
+            grid-template-columns: 160px 1fr 60px;
+            align-items: center;
+            gap: 12px;
             font-size: 11px;
         }
-
-        .tech-value {
-            color: #333;
+        .bar-label { color: #555; text-align: right; }
+        .bar-track {
+            height: 6px;
+            background: #eee;
+            border-radius: 1px;
+            overflow: hidden;
         }
+        .bar-fill {
+            height: 100%;
+            background: var(--fg);
+            border-radius: 1px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bar-fill.green { background: var(--green); }
+        .bar-value { color: var(--muted); font-size: 11px; }
 
-        /* Links Section */
-        .links {
+        /* ─── Stack ─── */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .stack-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .stack-item:hover {
+            border-color: #bbb;
+            transform: translateY(-2px);
+        }
+        .stack-category {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .stack-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
-            margin: 16px 0;
+            gap: 5px;
         }
+        .stack-tag {
+            font-size: 10px;
+            padding: 2px 7px;
+            border: 1px solid var(--border);
+            color: #444;
+            border-radius: 2px;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .stack-tag:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
-        .link-item {
+        /* ─── Links ─── */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .link-card {
+            border: 1px solid var(--border);
+            padding: 14px 16px;
             font-size: 12px;
-            color: #555;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 1px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
         }
-
-        .link-item:hover {
-            color: #111;
-            border-color: #111;
+        .link-card:hover {
+            border-color: var(--fg);
+            color: var(--fg);
+            background: var(--surface);
+            transform: translateX(3px);
         }
+        .link-arrow {
+            font-size: 10px;
+            color: var(--faint);
+            transition: color 0.2s, transform 0.2s;
+        }
+        .link-card:hover .link-arrow { color: var(--fg); transform: translateX(3px); }
 
-        /* Footer */
+        /* ─── Footer ─── */
         footer {
+            padding: 32px 48px;
             font-size: 11px;
-            color: #ccc;
-            padding-top: 48px;
-            border-top: 1px solid #f0f0f0;
+            color: var(--faint);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        footer a { font-size: 11px; color: var(--faint); border-bottom-color: transparent; }
+        footer a:hover { color: var(--muted); border-bottom-color: var(--muted); }
+
+        /* ─── Animations ─── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile */
-        @media (max-width: 600px) {
-            .container {
-                padding: 48px 16px;
-            }
+        @keyframes scanline {
+            from { transform: translateY(-100%); }
+            to   { transform: translateY(100vh); }
+        }
 
-            .ascii-header {
-                font-size: 8px;
-                margin-bottom: 48px;
-            }
+        .scanline {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.03), transparent);
+            pointer-events: none;
+            animation: scanline 6s linear infinite;
+            z-index: 999;
+        }
 
-            .ascii-diagram {
-                font-size: 9px;
-                padding: 16px;
+        /* ─── Mobile ─── */
+        @media (max-width: 700px) {
+            .page {
+                display: block;
             }
-
-            h1 {
-                font-size: 22px;
+            .sidebar {
+                position: static;
+                height: auto;
+                padding: 32px 20px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 12px;
             }
-
-            .tech-grid {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-
-            .results-table {
-                font-size: 11px;
-            }
-
-            .results-table th,
-            .results-table td {
-                padding: 8px 6px;
-            }
+            .sidebar-logo { margin-bottom: 0; }
+            nav { flex-direction: row; flex-wrap: wrap; }
+            .sidebar-footer { display: none; }
+            main { padding: 24px 20px 60px; }
+            section { padding: 40px 0; }
+            h1 { font-size: 24px; }
+            .stack-grid { grid-template-columns: 1fr; }
+            .bar-row { grid-template-columns: 120px 1fr 50px; }
+            .bar-label { font-size: 10px; }
+            footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
         }
     </style>
 </head>
 <body>
+<div class="scanline"></div>
 
-<div class="container">
-
-    <!-- ASCII Art Header -->
-    <div class="ascii-header" aria-hidden="true">
- ┌─────────────────────────────────────────────────┐
- │                                                 │
- │   ╔═╗╦ ╦╦═╗╔═╗╔╗╔  ╦═╗╔═╗╔═╗╔═╗╔═╗╦═╗╔═╗╦ ╦  │
- │   ╠═╣║ ║╠╦╝║╣ ║║║  ╠╦╝║╣ ╚═╗║╣ ╠═╣╠╦╝║  ╠═╣  │
- │   ╩ ╩╚═╝╩╚═╚═╝╝╚╝  ╩╚═╚═╝╚═╝╚═╝╩ ╩╩╚═╚═╝╩ ╩  │
- │                                                 │
- └─────────────────────────────────────────────────┘</div>
-
-    <!-- Status -->
-    <div class="status">
-        <div class="status-dot"></div>
-        <span>Available for research collaborations</span>
-    </div>
-
-    <!-- Identity -->
-    <div class="section">
-        <h1>Francisco Antonio</h1>
-        <div class="subtitle">Independent AI Researcher · Founder, Auren Research · 17 · Brazil</div>
-        <p>
-            Designing novel Transformer architectures from first principles.
-            Currently building Mixture-of-Collaboration (MoC) — a sparse
-            architecture where expert sub-networks collaborate through a
-            learned mediator instead of processing tokens independently.
-        </p>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Research -->
-    <div class="section">
-        <div class="section-label">Current Research</div>
-
-        <p>
-            <strong>Mixture-of-Collaboration (MoC)</strong> replaces the
-            independent expert paradigm of standard MoE with a collaborative
-            one. A learned mediator aggregates cross-expert information via
-            O(K) attention and optionally feeds refined signals back before
-            output fusion.
-        </p>
-        <p>
-            Each expert internally refines its representation through
-            Iterative Reasoning Layers (IRL) — multiple forward passes
-            through shared weights. Both reasoning depth and collaboration
-            rounds are governed by adaptive gates that learn per token
-            how much computation to allocate.
-        </p>
-
-        <!-- ASCII Architecture Diagram -->
-        <div class="ascii-diagram" aria-label="MoC Architecture Diagram">
-                          ┌─────────────┐
-                          │   Input x    │
-                          └──────┬───────┘
-                                 │
-                          ┌──────┴───────┐
-                          │   Router     │
-                          │  (top-k)     │
-                          └──────┬───────┘
-                                 │
-                    ┌────────────┼────────────┐
-                    │            │            │
-              ┌─────┴─────┐┌────┴────┐┌──────┴────┐
-              │ Expert 1  ││Expert 2 ││ Expert k  │
-              │           ││         ││           │
-              │ ┌───────┐ ││┌──────┐ ││ ┌───────┐ │
-              │ │  IRL  │ │││ IRL  │ ││ │  IRL  │ │
-              │ │ step 1│ │││step 1│ ││ │ step 1│ │
-              │ │ step 2│ │││step 2│ ││ │ step 2│ │
-              │ │ step n│ │││step n│ ││ │ step n│ │
-              │ └───────┘ ││└──────┘ ││ └───────┘ │
-              └─────┬─────┘└────┬────┘└──────┬────┘
-                    │           │            │
-                    └─────┬─────┴─────┬──────┘
-                          │           │
-                    ┌─────┴───────────┴─────┐
-                    │      Mediator         │
-                    │                       │
-                    │  q = proj(mediator)    │
-                    │  k,v = proj(experts)   │
-                    │  attn → message        │
-                    │  feedback → experts    │
-                    └───────────┬────────────┘
-                                │
-                    ┌───────────┴────────────┐
-                    │      Fuse Gate         │
-                    │  γ·mediator +          │
-                    │  (1-γ)·weighted_sum    │
-                    └───────────┬────────────┘
-                                │
-                         ┌──────┴───────┐
-                         │   Output     │
-                         └──────────────┘</div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Results -->
-    <div class="section">
-        <div class="section-label">Validated Results</div>
-
-        <p>
-            Controlled ablation at 64M parameters. Same dataset, same
-            seed, same hyperparameters, same hardware. Only the
-            architecture varies.
-        </p>
-
-        <table class="results-table">
-            <thead>
-                <tr>
-                    <th>Architecture</th>
-                    <th>Active / Token</th>
-                    <th>Perplexity</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Dense Transformer</td>
-                    <td>35.8M</td>
-                    <td>72.24</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>MoE (top-2)</td>
-                    <td>50.0M</td>
-                    <td>62.89</td>
-                    <td class="delta">-12.9%</td>
-                </tr>
-                <tr>
-                    <td>MoC v1</td>
-                    <td>50.0M</td>
-                    <td>60.28</td>
-                    <td class="delta">-16.6%</td>
-                </tr>
-                <tr>
-                    <td class="highlight">MoC vNext (adaptive)</td>
-                    <td class="highlight">50.0M</td>
-                    <td class="highlight">59.97</td>
-                    <td class="delta">-17.0%</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Technical -->
-    <div class="section">
-        <div class="section-label">Technical Stack</div>
-
-        <div class="tech-grid">
-            <span class="tech-label">Core</span>
-            <span class="tech-value">Python, PyTorch, custom autograd</span>
-
-            <span class="tech-label">Architecture</span>
-            <span class="tech-value">MoE/MoC, GQA, RoPE, RMSNorm, SwiGLU</span>
-
-            <span class="tech-label">Training</span>
-            <span class="tech-value">bf16/fp16 mixed precision, gradient checkpointing, fused AdamW</span>
-
-            <span class="tech-label">Infra</span>
-            <span class="tech-value">CUDA, ROCm, Weights & Biases, Docker</span>
-
-            <span class="tech-label">Security</span>
-            <span class="tech-value">Solidity, Go, EVM internals, smart contract auditing</span>
+<div class="page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">FA_</div>
+        <nav>
+            <a href="#hero"       class="nav-item active">About</a>
+            <a href="#research"   class="nav-item">Research</a>
+            <a href="#results"    class="nav-item">Results</a>
+            <a href="#stack"      class="nav-item">Stack</a>
+            <a href="#links"      class="nav-item">Links</a>
+        </nav>
+        <div class="sidebar-footer">
+            © <script>document.write(new Date().getFullYear())</script><br>
+            Auren Research<br>
+            Brazil
         </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div style="display:flex;flex-direction:column;">
+        <main>
+
+            <!-- Hero -->
+            <section id="hero">
+                <div class="status-bar">
+                    <div class="status-dot"></div>
+                    Open to research collaborations
+                </div>
+
+                <h1>Francisco Antonio</h1>
+                <div class="hero-meta">
+                    Independent AI Researcher ·
+                    <span>Founder, Auren Research</span> ·
+                    17 · Brazil
+                </div>
+
+                <p class="hero-body">
+                    Designing novel Transformer architectures from first principles.
+                    Currently building <strong>Mixture-of-Collaboration (MoC)</strong> —
+                    a sparse architecture where expert sub-networks collaborate
+                    through a learned mediator instead of processing tokens independently.
+                </p>
+            </section>
+
+            <!-- Research -->
+            <section id="research">
+                <div class="section-tag">Current Research</div>
+
+                <div class="research-card">
+                    <div class="card-title">
+                        Mixture-of-Collaboration (MoC)
+                        <span class="badge wip">Active</span>
+                    </div>
+                    <p class="card-body">
+                        Replaces the independent expert paradigm of standard MoE with a
+                        collaborative one. A learned mediator aggregates cross-expert
+                        information via O(K) attention and optionally feeds refined signals
+                        back before output fusion.
+                    </p>
+                </div>
+
+                <div class="research-card">
+                    <div class="card-title">
+                        Iterative Reasoning Layers (IRL)
+                        <span class="badge">Component</span>
+                    </div>
+                    <p class="card-body">
+                        Each expert internally refines its representation through
+                        multiple forward passes through shared weights. Both reasoning
+                        depth and collaboration rounds are governed by adaptive gates
+                        that learn per token how much computation to allocate.
+                    </p>
+                </div>
+
+                <!-- Architecture Diagram -->
+                <div style="margin-top: 28px;">
+                    <div class="diagram-label">Architecture — MoC vNext</div>
+                    <div class="ascii-diagram" aria-label="MoC Architecture Diagram">
+                              ┌─────────────┐
+                              │   Input x    │
+                              └──────┬───────┘
+                                     │
+                              ┌──────┴───────┐
+                              │   Router     │
+                              │  (top-k)     │
+                              └──────┬───────┘
+                                     │
+                        ┌────────────┼────────────┐
+                        │            │            │
+                  ┌─────┴─────┐┌────┴────┐┌──────┴────┐
+                  │ Expert 1  ││Expert 2 ││ Expert k  │
+                  │ ┌───────┐ ││┌──────┐ ││ ┌───────┐ │
+                  │ │  IRL  │ │││ IRL  │ ││ │  IRL  │ │
+                  │ │step 1 │ │││step 1│ ││ │step 1 │ │
+                  │ │step 2 │ │││step 2│ ││ │step 2 │ │
+                  │ │step n │ │││step n│ ││ │step n │ │
+                  │ └───────┘ ││└──────┘ ││ └───────┘ │
+                  └─────┬─────┘└────┬────┘└──────┬────┘
+                        │           │            │
+                        └─────┬─────┴─────┬──────┘
+                              │           │
+                        ┌─────┴───────────┴─────┐
+                        │       Mediator         │
+                        │  q = proj(mediator)    │
+                        │  k,v = proj(experts)   │
+                        │  attn → message        │
+                        │  feedback → experts    │
+                        └───────────┬────────────┘
+                                    │
+                        ┌───────────┴────────────┐
+                        │       Fuse Gate         │
+                        │  γ·mediator +           │
+                        │  (1-γ)·weighted_sum     │
+                        └───────────┬─────────────┘
+                                    │
+                             ┌──────┴───────┐
+                             │   Output     │
+                             └──────────────┘</div>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section id="results">
+                <div class="section-tag">Validated Results</div>
+
+                <p style="font-size:12px;color:#666;margin-bottom:24px;line-height:1.9;">
+                    Controlled ablation at 64M parameters. Same dataset, same seed,
+                    same hyperparameters, same hardware. Only the architecture varies.
+                </p>
+
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Architecture</th>
+                            <th>Active / Token</th>
+                            <th>Perplexity ↓</th>
+                            <th>Δ vs Dense</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dense Transformer</td>
+                            <td>35.8M</td>
+                            <td>72.24</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>MoE (top-2)</td>
+                            <td>50.0M</td>
+                            <td>62.89</td>
+                            <td class="delta">−12.9%</td>
+                        </tr>
+                        <tr>
+                            <td>MoC v1</td>
+                            <td>50.0M</td>
+                            <td>60.28</td>
+                            <td class="delta">−16.6%</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>MoC vNext (adaptive)</td>
+                            <td>50.0M</td>
+                            <td>59.97</td>
+                            <td class="delta">−17.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bar chart -->
+                <div class="bar-chart" id="barChart">
+                    <div class="bar-row">
+                        <span class="bar-label">Dense Transformer</span>
+                        <div class="bar-track"><div class="bar-fill" data-w="100"></div></div>
+                        <span class="bar-value">72.24</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">MoE (top-2)</span>
+                        <div class="bar-track"><div class="bar-fill" data-w="87"></div></div>
+                        <span class="bar-value">62.89</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">MoC v1</span>
+                        <div class="bar-track"><div class="bar-fill" data-w="83.5"></div></div>
+                        <span class="bar-value">60.28</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">MoC vNext</span>
+                        <div class="bar-track"><div class="bar-fill green" data-w="83"></div></div>
+                        <span class="bar-value">59.97</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stack -->
+            <section id="stack">
+                <div class="section-tag">Technical Stack</div>
+
+                <div class="stack-grid">
+                    <div class="stack-item">
+                        <div class="stack-category">Core</div>
+                        <div class="stack-tags">
+                            <span class="stack-tag">Python</span>
+                            <span class="stack-tag">PyTorch</span>
+                            <span class="stack-tag">custom autograd</span>
+                        </div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-category">Architecture</div>
+                        <div class="stack-tags">
+                            <span class="stack-tag">MoE / MoC</span>
+                            <span class="stack-tag">GQA</span>
+                            <span class="stack-tag">RoPE</span>
+                            <span class="stack-tag">RMSNorm</span>
+                            <span class="stack-tag">SwiGLU</span>
+                        </div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-category">Training</div>
+                        <div class="stack-tags">
+                            <span class="stack-tag">bf16 / fp16</span>
+                            <span class="stack-tag">grad checkpointing</span>
+                            <span class="stack-tag">fused AdamW</span>
+                        </div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-category">Infra</div>
+                        <div class="stack-tags">
+                            <span class="stack-tag">CUDA</span>
+                            <span class="stack-tag">ROCm</span>
+                            <span class="stack-tag">W&B</span>
+                            <span class="stack-tag">Docker</span>
+                        </div>
+                    </div>
+                    <div class="stack-item" style="grid-column: span 2;">
+                        <div class="stack-category">Security</div>
+                        <div class="stack-tags">
+                            <span class="stack-tag">Solidity</span>
+                            <span class="stack-tag">Go</span>
+                            <span class="stack-tag">EVM internals</span>
+                            <span class="stack-tag">smart contract auditing</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Links -->
+            <section id="links">
+                <div class="section-tag">Links</div>
+
+                <div class="links-grid">
+                    <a href="https://github.com/Auren-Research/lunaris" class="link-card" target="_blank">
+                        <span>GitHub → Lunaris</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://wandb.ai/smeryylle-moon-cloud-services-/lunaris-moc-validation" class="link-card" target="_blank">
+                        <span>W&B Experiments</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://github.com/Auren-Research" class="link-card" target="_blank">
+                        <span>Auren Research</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://huggingface.co/meryyllebr543" class="link-card" target="_blank">
+                        <span>HuggingFace</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://linkedin.com/in/francisco-antonio-0434aa284" class="link-card" target="_blank">
+                        <span>LinkedIn</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://x.com/a93918" class="link-card" target="_blank">
+                        <span>X / Twitter</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="mailto:meryyllebr@gmail.com" class="link-card">
+                        <span>Email</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <span>© <script>document.write(new Date().getFullYear())</script> Francisco Antonio · Auren Research</span>
+            <a href="mailto:meryyllebr@gmail.com">meryyllebr@gmail.com</a>
+        </footer>
     </div>
-
-    <hr class="divider">
-
-    <!-- Links -->
-    <div class="section">
-        <div class="section-label">Links</div>
-
-        <div class="links">
-            <a href="https://github.com/Auren-Research/lunaris" class="link-item" target="_blank">GitHub → Lunaris</a>
-            <a href="https://wandb.ai/smeryylle-moon-cloud-services-/lunaris-moc-validation" class="link-item" target="_blank">W&B → Experiments</a>
-            <a href="https://github.com/Auren-Research" class="link-item" target="_blank">Auren Research</a>
-            <a href="https://huggingface.co/meryyllebr543" class="link-item" target="_blank">HuggingFace</a>
-            <a href="https://linkedin.com/in/francisco-antonio-0434aa284" class="link-item" target="_blank">LinkedIn</a>
-            <a href="https://x.com/a93918" class="link-item" target="_blank">X / Twitter</a>
-            <a href="mailto:meryyllebr@gmail.com" class="link-item">Email</a>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <script>document.write(new Date().getFullYear())</script> · Francisco Antonio · Auren Research · Brazil
-    </footer>
-
 </div>
+
+<script>
+    // ── Scroll-reveal sections ──
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+    // Trigger hero immediately
+    document.querySelector('#hero').classList.add('visible');
+
+    // ── Animate bars when results section visible ──
+    const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
+                    setTimeout(() => {
+                        bar.style.width = bar.dataset.w + '%';
+                    }, i * 120);
+                });
+                barObserver.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    const barChart = document.getElementById('barChart');
+    if (barChart) barObserver.observe(barChart.closest('section'));
+
+    // ── Active nav highlight on scroll ──
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const id = e.target.id;
+                navItems.forEach(n => {
+                    n.classList.toggle('active', n.getAttribute('href') === '#' + id);
+                });
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(s => navObserver.observe(s));
+</script>
 
 </body>
 </html>
