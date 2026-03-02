@@ -1,9 +1,9 @@
+
+
 <div align="center">
-  <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=9370DB&center=true&vCenter=true&width=435&lines=AI+Architect+%26+Researcher;Building+LLMs+from+First+Principles;Exploring+Sparse+Architectures" alt="Typing SVG" />
-  </a>
 
   <h1>Francisco Antonio</h1>
+  <p><strong>AI Architecture Research — Mixture-of-Collaboration</strong></p>
 
   <p>
     <a href="https://www.linkedin.com/in/francisco-antonio-0434aa284/" target="_blank">
@@ -20,43 +20,38 @@
 
 ---
 
-### About Me
+### About
 
-17-year-old AI Researcher focused on designing and training language model architectures from scratch. I build systems to understand the *why* behind learning dynamics — not just replicate them.
+17-year-old independent AI researcher building novel Transformer architectures from first principles. Founder of Auren Research.
 
-- **Current Focus:** Collaborative Expert Systems (MoC) for emergent reasoning in sparse models
-- **Specialties:** Deep learning optimization, distributed training, experimental architectures
-- **Goal:** Join a team that values technical rigor, creativity, and ambitious R&D
+My current work focuses on **Mixture-of-Collaboration (MoC)** — a sparse architecture where expert sub-networks collaborate through a learned mediator instead of processing tokens independently. Combined with Iterative Reasoning Layers and adaptive compute gating, MoC achieves 4.6% lower perplexity than standard MoE under identical parameter and compute budgets.
 
----
-
-### Tech Stack
-
-**Languages & Frameworks:** Python, PyTorch, Custom Autograd Functions
-
-**Architectures:** Mixture-of-Experts (MoE), Sparse Attention (NSA), Grouped-Query Attention (GQA), QK-Norm, RoPE
-
-**Training at Scale:** DDP, FSDP
-
-**Tooling:** Weights & Biases, Docker, Git
+Validated through controlled ablation experiments. All code, configs, and experiment logs are public.
 
 ---
 
-### Featured Projects
+### Research Interests
 
-<div align="center">
-
-| [**Lunaris Codex**](https://github.com/MeryylleA/lunariscodex) | [**Lunaris Codex MoC**](https://github.com/MeryylleA/lunariscodex-MoC) |
-|:---:|:---:|
-| Modular LLM training toolkit featuring SOTA Dense models and Hybrid NSA-MoE architectures. | Novel "Mixture-of-Collaborative-Experts" designed for emergent reasoning via 2-Pass communication. |
-
-</div>
+- Sparse expert architectures and routing mechanisms
+- Expert collaboration and communication topologies
+- Adaptive compute allocation (learned depth per token)
+- Iterative reasoning through weight-shared forward passes
+- Scaling laws for collaborative expert systems
 
 ---
 
-### GitHub Stats
+### Technical Stack
 
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=MeryylleA&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" height="150" alt="stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=MeryylleA&layout=compact&theme=tokyonight&hide_border=true" height="150" alt="languages" />
-</div>
+| Domain | Tools |
+|--------|-------|
+| Core | Python, PyTorch, custom autograd |
+| Architecture | MoE/MoC, GQA, RoPE, RMSNorm, SwiGLU |
+| Training | Mixed precision (bf16/fp16), gradient checkpointing, fused optimizers |
+| Infrastructure | CUDA, ROCm, W&B, Docker, Git |
+| Security | Solidity, Go, EVM internals, smart contract auditing |
+
+---
+
+### Contact
+
+Open to research collaborations, compute partnerships, and opportunities in AI architecture research. If you have access to compute and want to validate MoC at scale, reach out.
