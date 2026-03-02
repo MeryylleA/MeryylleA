@@ -1,346 +1,456 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Francisco Antonio — AI Architect & Researcher</title>
-    <meta name="description" content="AI Architect & Researcher focused on next-gen language model architectures.">
-    
-    <!-- Fonts: Inter for UI, JetBrains Mono for Code/Tech -->
+    <title>Francisco Antonio — AI Architecture Research</title>
+    <meta name="description" content="Independent AI researcher. Building Mixture-of-Collaboration (MoC) — a novel sparse Transformer architecture.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS (via CDN for instant usage without build steps) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Custom Config for Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        background: '#050505',
-                        surface: '#0A0A0A',
-                        surfaceHighlight: '#121212',
-                        border: '#222222',
-                        primary: '#E0E0E0',
-                        secondary: '#A0A0A0',
-                        accent: '#FF8C00', // Preserved your orange
-                        accentPurple: '#9370DB', // Preserved your purple
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.8s ease-out forwards',
-                        'slide-up': 'slideUp 0.8s ease-out forwards',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Utilities */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #030303;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(147, 112, 219, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(255, 140, 0, 0.05) 0px, transparent 50%);
-            background-attachment: fixed;
+            font-family: 'JetBrains Mono', monospace;
+            background: #fafafa;
+            color: #111;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Noise Texture Overlay */
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 50;
+        ::selection {
+            background: #111;
+            color: #fafafa;
         }
 
-        /* Glass Card Styles */
-        .bento-card {
-            background: rgba(15, 15, 15, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        a {
+            color: #111;
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
+            transition: border-color 0.2s;
         }
 
-        .bento-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        a:hover {
+            border-color: #111;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #222; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #333; 
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px;
         }
 
-        .tech-pill {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.2s;
+        /* ASCII Header */
+        .ascii-header {
+            font-size: 11px;
+            line-height: 1.3;
+            color: #999;
+            margin-bottom: 64px;
+            white-space: pre;
+            overflow-x: auto;
         }
-        .tech-pill:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.2);
+
+        /* Status Bar */
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 48px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #aaa;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        p {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 24px 0;
+        }
+
+        .results-table th {
+            text-align: left;
+            font-weight: 500;
+            color: #888;
+            padding: 8px 12px;
+            border-bottom: 2px solid #e5e5e5;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .results-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table .highlight {
+            font-weight: 700;
+            color: #111;
+        }
+
+        .results-table .delta {
+            color: #22c55e;
+            font-size: 11px;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 48px 0;
+        }
+
+        /* Architecture Diagram (ASCII) */
+        .ascii-diagram {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 24px;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #555;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 24px 0;
+        }
+
+        /* Tech List */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 8px 24px;
+            font-size: 12px;
+            margin: 16px 0;
+        }
+
+        .tech-label {
+            color: #aaa;
+            font-size: 11px;
+        }
+
+        .tech-value {
+            color: #333;
+        }
+
+        /* Links Section */
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .link-item {
+            font-size: 12px;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1px;
+        }
+
+        .link-item:hover {
+            color: #111;
+            border-color: #111;
+        }
+
+        /* Footer */
+        footer {
+            font-size: 11px;
+            color: #ccc;
+            padding-top: 48px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 48px 16px;
+            }
+
+            .ascii-header {
+                font-size: 8px;
+                margin-bottom: 48px;
+            }
+
+            .ascii-diagram {
+                font-size: 9px;
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+
+            .results-table {
+                font-size: 11px;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 8px 6px;
+            }
         }
     </style>
 </head>
-<body class="text-primary antialiased selection:bg-accent selection:text-white pb-20">
+<body>
 
-    <!-- Noise Texture -->
-    <div class="noise-overlay"></div>
+<div class="container">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-        
-        <!-- Header / Nav -->
-        <header class="flex justify-between items-center mb-16 animate-fade-in">
-            <div class="flex items-center gap-3">
-                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span class="font-mono text-sm text-secondary tracking-tight">AVAILABLE FOR RESEARCH</span>
-            </div>
-            
-            <nav class="flex gap-6">
-                <a href="mailto:meryyllebr@gmail.com" class="text-secondary hover:text-white transition-colors text-sm font-medium">Contact</a>
-                <a href="https://github.com/MeryylleA" target="_blank" class="text-secondary hover:text-white transition-colors text-sm font-medium">GitHub</a>
-            </nav>
-        </header>
+    <!-- ASCII Art Header -->
+    <div class="ascii-header" aria-hidden="true">
+ ┌─────────────────────────────────────────────────┐
+ │                                                 │
+ │   ╔═╗╦ ╦╦═╗╔═╗╔╗╔  ╦═╗╔═╗╔═╗╔═╗╔═╗╦═╗╔═╗╦ ╦  │
+ │   ╠═╣║ ║╠╦╝║╣ ║║║  ╠╦╝║╣ ╚═╗║╣ ╠═╣╠╦╝║  ╠═╣  │
+ │   ╩ ╩╚═╝╩╚═╚═╝╝╚╝  ╩╚═╚═╝╚═╝╚═╝╩ ╩╩╚═╚═╝╩ ╩  │
+ │                                                 │
+ └─────────────────────────────────────────────────┘</div>
 
-        <!-- Main Layout: Bento Grid -->
-        <main class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-min">
-
-            <!-- 1. Hero / Profile (Spans 8 columns on desktop) -->
-            <div class="col-span-1 md:col-span-8 bento-card rounded-3xl p-8 md:p-12 relative overflow-hidden group animate-slide-up" style="animation-delay: 0.1s;">
-                <!-- Subtle Gradient Background Effect -->
-                <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-accentPurple/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-accentPurple/20 transition-all duration-700"></div>
-
-                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full">
-                    <div class="relative">
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl">
-                            <!-- Placeholder for profile image, add your src back if you have it hosted -->
-                            <img src="https://github.com/MeryylleA.png" onerror="this.src='https://ui-avatars.com/api/?name=Francisco+Antonio&background=111&color=fff'" alt="Francisco Antonio" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-2 -right-2 bg-surfaceHighlight border border-border p-2 rounded-full">
-                            <i data-lucide="brain-circuit" class="w-5 h-5 text-accent"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="flex-1">
-                        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
-                            Francisco Antonio
-                        </h1>
-                        <p class="text-xl md:text-2xl text-secondary font-light">
-                            AI Architect & <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accentPurple">Researcher</span>
-                        </p>
-                        <div class="mt-6 flex flex-wrap gap-3">
-                            <a href="https://github.com/MeryylleA" class="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-gray-200 transition-colors">
-                                <i data-lucide="github" class="w-4 h-4"></i> GitHub
-                            </a>
-                            <a href="https://x.com/a93918" class="flex items-center gap-2 bg-white/10 text-white px-5 py-2.5 rounded-full font-medium text-sm hover:bg-white/20 transition-colors backdrop-blur-sm">
-                                <i data-lucide="twitter" class="w-4 h-4"></i> Twitter
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. Stats / Quick Info (Spans 4 columns) -->
-            <div class="col-span-1 md:col-span-4 grid grid-rows-2 gap-6">
-                <!-- Location/Age -->
-                <div class="bento-card rounded-3xl p-6 flex flex-col justify-center animate-slide-up" style="animation-delay: 0.2s;">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-secondary font-mono text-xs uppercase">Age</span>
-                        <i data-lucide="user" class="w-4 h-4 text-accent"></i>
-                    </div>
-                    <div class="text-3xl font-bold">17 <span class="text-sm font-normal text-secondary ml-1">y/o</span></div>
-                    <div class="text-sm text-secondary mt-1">Self-taught Researcher</div>
-                </div>
-
-                <!-- Focus Area -->
-                <div class="bento-card rounded-3xl p-6 flex flex-col justify-center animate-slide-up" style="animation-delay: 0.3s;">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-secondary font-mono text-xs uppercase">Focus</span>
-                        <i data-lucide="layers" class="w-4 h-4 text-accentPurple"></i>
-                    </div>
-                    <div class="text-lg font-medium leading-tight">LLM Architectures &<br>Emergent Intelligence</div>
-                </div>
-            </div>
-
-            <!-- 3. About Section (Spans 12 columns - Full Width) -->
-            <div class="col-span-1 md:col-span-12 bento-card rounded-3xl p-8 md:p-10 animate-slide-up" style="animation-delay: 0.4s;">
-                <div class="flex flex-col md:flex-row gap-10">
-                    <div class="md:w-1/3">
-                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                            <i data-lucide="terminal" class="w-5 h-5 text-accent"></i>
-                            Mission Protocol
-                        </h2>
-                        <div class="h-1 w-20 bg-gradient-to-r from-accent to-transparent rounded-full"></div>
-                    </div>
-                    <div class="md:w-2/3">
-                        <p class="text-secondary text-lg leading-relaxed">
-                            Passionate about building the next generation of language model architectures from the ground up. I see a Transformer architecture as a canvas—a space to explore new pathways to intelligence, from the computational efficiency of industrial-grade <span class="text-white font-medium">Mixture-of-Experts</span> to the emergent complexity of collaborative reasoning systems.
-                        </p>
-                        <p class="text-secondary text-lg leading-relaxed mt-4">
-                            My work focuses on designing, implementing, and training high-performance AI systems in <span class="font-mono text-accent">PyTorch</span> that don't just work, but also teach us something new about learning itself.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Projects Header -->
-            <div class="col-span-1 md:col-span-12 mt-8 mb-4 flex items-center justify-between animate-slide-up" style="animation-delay: 0.5s;">
-                <h3 class="text-xl font-mono text-white">SELECTED_WORKS</h3>
-                <div class="h-[1px] flex-1 bg-border ml-6"></div>
-            </div>
-
-            <!-- Project 1: Lunaris Dense -->
-            <a href="https://github.com/MeryylleA/lunariscodex" target="_blank" class="col-span-1 md:col-span-6 bento-card rounded-3xl p-8 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.6s;">
-                <div class="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i data-lucide="arrow-up-right" class="text-white w-6 h-6"></i>
-                </div>
-                
-                <div class="flex-1">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
-                            <i data-lucide="box" class="w-4 h-4"></i>
-                        </div>
-                        <h4 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">Lunaris Codex - Dense</h4>
-                    </div>
-                    <p class="text-secondary mb-6 line-clamp-3">
-                        A modern, Llama-style Transformer architecture built from scratch. Incorporates SOTA features like QK-Norm, Grouped-Query Attention (GQA), and NTK-aware RoPE for enhanced stability and performance.
-                    </p>
-                </div>
-                
-                <div class="flex flex-wrap gap-2 mt-auto">
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">PyTorch</span>
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">GQA</span>
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">QK-Norm</span>
-                </div>
-            </a>
-
-            <!-- Project 2: Lunaris MoE -->
-            <a href="https://github.com/MeryylleA/lunariscodex/tree/moe-experiment" target="_blank" class="col-span-1 md:col-span-6 bento-card rounded-3xl p-8 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.7s;">
-                <div class="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i data-lucide="arrow-up-right" class="text-white w-6 h-6"></i>
-                </div>
-                
-                <div class="flex-1">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-                            <i data-lucide="cpu" class="w-4 h-4"></i>
-                        </div>
-                        <h4 class="text-xl font-bold text-white group-hover:text-accent transition-colors">Lunaris Codex - MoE</h4>
-                    </div>
-                    <p class="text-secondary mb-6 line-clamp-3">
-                        Industrial-grade Mixture-of-Experts based on Switch Transformer. Features capacity-aware routing, router z-loss for stability, and high-performance contiguous dispatch.
-                    </p>
-                </div>
-                
-                <div class="flex flex-wrap gap-2 mt-auto">
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">MoE</span>
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">FSDP</span>
-                    <span class="tech-pill px-3 py-1 rounded-md text-xs font-mono text-gray-400">Distributed</span>
-                </div>
-            </a>
-
-            <!-- Project 3: MoC (Collaborative) -->
-            <a href="https://github.com/MeryylleA/lunariscodex-MoC" target="_blank" class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.8s;">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-accentPurple/10 flex items-center justify-center text-accentPurple">
-                        <i data-lucide="network" class="w-4 h-4"></i>
-                    </div>
-                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover:text-white transition-colors"></i>
-                </div>
-                <h4 class="text-lg font-bold text-white mb-2">MoC (Mixture-of-Collaborative-Experts)</h4>
-                <p class="text-secondary text-sm mb-4">
-                    Novel architecture where experts collaborate via a '2-Pass' communication mechanism before fusion, enabling emergent reasoning.
-                </p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Research</span>
-                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Novel</span>
-                </div>
-            </a>
-
-            <!-- Project 4: NSA Hybrid -->
-            <a href="https://github.com/MeryylleA/lunariscodex/tree/nsa-experiment" target="_blank" class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 group relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: 0.9s;">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                    </div>
-                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover:text-white transition-colors"></i>
-                </div>
-                <h4 class="text-lg font-bold text-white mb-2">NSA-MoE Hybrid</h4>
-                <p class="text-secondary text-sm mb-4">
-                    Fusion of Native Sparse Attention (NSA) and MoE to simultaneously address O(n²) complexity and parameter growth.
-                </p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Sparse Attn</span>
-                    <span class="tech-pill px-2 py-1 rounded text-[10px] font-mono uppercase tracking-wide">Long Context</span>
-                </div>
-            </a>
-
-            <!-- Connect Block -->
-            <div class="col-span-1 md:col-span-4 bento-card rounded-3xl p-6 flex flex-col justify-between group animate-slide-up" style="animation-delay: 1.0s;">
-                <div>
-                    <h4 class="text-lg font-bold text-white mb-2">Let's Connect</h4>
-                    <p class="text-secondary text-sm">
-                        Always open to discussing new architectures and opportunities.
-                    </p>
-                </div>
-                <div class="flex gap-4 mt-6">
-                    <a href="https://www.linkedin.com/in/francisco-antonio-0434aa284/" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#0077b5] hover:text-white transition-all">
-                        <i data-lucide="linkedin" class="w-5 h-5"></i>
-                    </a>
-                    <a href="mailto:meryyllebr@gmail.com" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
-                        <i data-lucide="mail" class="w-5 h-5"></i>
-                    </a>
-                    <a href="https://x.com/a93918" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-black hover:text-white transition-all">
-                        <i data-lucide="twitter" class="w-5 h-5"></i>
-                    </a>
-                </div>
-            </div>
-
-        </main>
-        
-        <footer class="mt-24 text-center text-secondary text-sm font-mono opacity-50">
-            <p>&copy; <script>document.write(new Date().getFullYear())</script> Francisco Antonio. Built with logic.</p>
-        </footer>
-
+    <!-- Status -->
+    <div class="status">
+        <div class="status-dot"></div>
+        <span>Available for research collaborations</span>
     </div>
 
-    <!-- Initialize Icons -->
-    <script>
-        lucide.createIcons();
-    </script>
+    <!-- Identity -->
+    <div class="section">
+        <h1>Francisco Antonio</h1>
+        <div class="subtitle">Independent AI Researcher · Founder, Auren Research · 17 · Brazil</div>
+        <p>
+            Designing novel Transformer architectures from first principles.
+            Currently building Mixture-of-Collaboration (MoC) — a sparse
+            architecture where expert sub-networks collaborate through a
+            learned mediator instead of processing tokens independently.
+        </p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Research -->
+    <div class="section">
+        <div class="section-label">Current Research</div>
+
+        <p>
+            <strong>Mixture-of-Collaboration (MoC)</strong> replaces the
+            independent expert paradigm of standard MoE with a collaborative
+            one. A learned mediator aggregates cross-expert information via
+            O(K) attention and optionally feeds refined signals back before
+            output fusion.
+        </p>
+        <p>
+            Each expert internally refines its representation through
+            Iterative Reasoning Layers (IRL) — multiple forward passes
+            through shared weights. Both reasoning depth and collaboration
+            rounds are governed by adaptive gates that learn per token
+            how much computation to allocate.
+        </p>
+
+        <!-- ASCII Architecture Diagram -->
+        <div class="ascii-diagram" aria-label="MoC Architecture Diagram">
+                          ┌─────────────┐
+                          │   Input x    │
+                          └──────┬───────┘
+                                 │
+                          ┌──────┴───────┐
+                          │   Router     │
+                          │  (top-k)     │
+                          └──────┬───────┘
+                                 │
+                    ┌────────────┼────────────┐
+                    │            │            │
+              ┌─────┴─────┐┌────┴────┐┌──────┴────┐
+              │ Expert 1  ││Expert 2 ││ Expert k  │
+              │           ││         ││           │
+              │ ┌───────┐ ││┌──────┐ ││ ┌───────┐ │
+              │ │  IRL  │ │││ IRL  │ ││ │  IRL  │ │
+              │ │ step 1│ │││step 1│ ││ │ step 1│ │
+              │ │ step 2│ │││step 2│ ││ │ step 2│ │
+              │ │ step n│ │││step n│ ││ │ step n│ │
+              │ └───────┘ ││└──────┘ ││ └───────┘ │
+              └─────┬─────┘└────┬────┘└──────┬────┘
+                    │           │            │
+                    └─────┬─────┴─────┬──────┘
+                          │           │
+                    ┌─────┴───────────┴─────┐
+                    │      Mediator         │
+                    │                       │
+                    │  q = proj(mediator)    │
+                    │  k,v = proj(experts)   │
+                    │  attn → message        │
+                    │  feedback → experts    │
+                    └───────────┬────────────┘
+                                │
+                    ┌───────────┴────────────┐
+                    │      Fuse Gate         │
+                    │  γ·mediator +          │
+                    │  (1-γ)·weighted_sum    │
+                    └───────────┬────────────┘
+                                │
+                         ┌──────┴───────┐
+                         │   Output     │
+                         └──────────────┘</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Results -->
+    <div class="section">
+        <div class="section-label">Validated Results</div>
+
+        <p>
+            Controlled ablation at 64M parameters. Same dataset, same
+            seed, same hyperparameters, same hardware. Only the
+            architecture varies.
+        </p>
+
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Architecture</th>
+                    <th>Active / Token</th>
+                    <th>Perplexity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dense Transformer</td>
+                    <td>35.8M</td>
+                    <td>72.24</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>MoE (top-2)</td>
+                    <td>50.0M</td>
+                    <td>62.89</td>
+                    <td class="delta">-12.9%</td>
+                </tr>
+                <tr>
+                    <td>MoC v1</td>
+                    <td>50.0M</td>
+                    <td>60.28</td>
+                    <td class="delta">-16.6%</td>
+                </tr>
+                <tr>
+                    <td class="highlight">MoC vNext (adaptive)</td>
+                    <td class="highlight">50.0M</td>
+                    <td class="highlight">59.97</td>
+                    <td class="delta">-17.0%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Technical -->
+    <div class="section">
+        <div class="section-label">Technical Stack</div>
+
+        <div class="tech-grid">
+            <span class="tech-label">Core</span>
+            <span class="tech-value">Python, PyTorch, custom autograd</span>
+
+            <span class="tech-label">Architecture</span>
+            <span class="tech-value">MoE/MoC, GQA, RoPE, RMSNorm, SwiGLU</span>
+
+            <span class="tech-label">Training</span>
+            <span class="tech-value">bf16/fp16 mixed precision, gradient checkpointing, fused AdamW</span>
+
+            <span class="tech-label">Infra</span>
+            <span class="tech-value">CUDA, ROCm, Weights & Biases, Docker</span>
+
+            <span class="tech-label">Security</span>
+            <span class="tech-value">Solidity, Go, EVM internals, smart contract auditing</span>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Links -->
+    <div class="section">
+        <div class="section-label">Links</div>
+
+        <div class="links">
+            <a href="https://github.com/Auren-Research/lunaris" class="link-item" target="_blank">GitHub → Lunaris</a>
+            <a href="https://wandb.ai/smeryylle-moon-cloud-services-/lunaris-moc-validation" class="link-item" target="_blank">W&B → Experiments</a>
+            <a href="https://github.com/Auren-Research" class="link-item" target="_blank">Auren Research</a>
+            <a href="https://huggingface.co/meryyllebr543" class="link-item" target="_blank">HuggingFace</a>
+            <a href="https://linkedin.com/in/francisco-antonio-0434aa284" class="link-item" target="_blank">LinkedIn</a>
+            <a href="https://x.com/a93918" class="link-item" target="_blank">X / Twitter</a>
+            <a href="mailto:meryyllebr@gmail.com" class="link-item">Email</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <script>document.write(new Date().getFullYear())</script> · Francisco Antonio · Auren Research · Brazil
+    </footer>
+
+</div>
+
 </body>
 </html>
